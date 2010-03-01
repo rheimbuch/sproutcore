@@ -889,7 +889,7 @@ SC.View = SC.Responder.extend(SC.DelegateSupport,
     var context = this.renderContext(this.get('tagName')) ;
     
     // now prepare the content like normal.
-    this.prepareContext(context, YES) ;
+    this.renderToContext(context) ;
     this.set('layer', context.element()) ;
     
     // now notify the view and its child views..
@@ -903,7 +903,11 @@ SC.View = SC.Responder.extend(SC.DelegateSupport,
     invokes the same on all child views.
   */
   _notifyDidCreateLayer: function() {
+    // notify, not just the view, but also the view renderers
+    if (this.renderer) this.renderer.didCreateLayer(this);
     if (this.didCreateLayer) this.didCreateLayer() ;
+    
+    // and notify others
     var mixins = this.didCreateLayerMixin, len, idx,
         childViews = this.get('childViews');
     if (mixins) {
@@ -982,6 +986,14 @@ SC.View = SC.Responder.extend(SC.DelegateSupport,
     for (idx=0; idx<len; ++idx) childViews[idx]._notifyWillDestroyLayer() ;
     
     this.set('layer', null) ;
+  },
+  
+  /**
+    Returns the layer. Meant only for use from renderers and such—this is a layer provider function.
+  */
+  isLayerProvider: YES,
+  getLayer: function() {
+    return this.get("layer");
   },
   
   /**
