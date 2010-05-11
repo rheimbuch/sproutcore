@@ -396,7 +396,7 @@ SC.mixin(SC.Object, /** @scope SC.Object */ {
   design: function() {
     if (this.isDesign) return this; // only run design one time
     var ret = this.extend.apply(this, arguments);
-    ret.isDesign = YES ;
+    ret.isDesign = true ;
     if (SC.ObjectDesigner) {
       SC.ObjectDesigner.didLoadDesign(ret, this, SC.A(arguments));
     }
@@ -803,7 +803,7 @@ function findClassNames() {
     }
   } ;
 
-  searchObject(null, require('system', 'default').global, 2) ;
+  searchObject(null, window, 2) ;
 
   // Internet Explorer doesn't loop over global variables...
   /*if ( SC.browser.isIE ) {

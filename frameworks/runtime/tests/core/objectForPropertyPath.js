@@ -4,7 +4,7 @@
 //            Portions ©2008-2009 Apple Inc. All rights reserved.
 // License:   Licened under MIT license (see license.js)
 // ==========================================================================
-
+/*globals run */
 "import core-test:qunit";
 var SC = require('index'); // load sproutcore/foundation
 
@@ -23,4 +23,4 @@ test("should be able to resolve an object on the window", function() {
   window.myGlobal =null ;
 });
 
-plan.run();
+run();

@@ -7,7 +7,6 @@
 
 "import core-test:qunit";
 var SC = require('index'); // load sproutcore/foundation
-var system = require('system' ,'default');
 
 var fromObject, toObject, binding, Bon1, bon2 ; // global variables
 
@@ -252,13 +251,13 @@ test("two bindings to the same value should sync in the order they are initializ
 
   SC.RunLoop.begin();
 
-  system.global.a = SC.Object.create({ 
+  window.a = SC.Object.create({ 
     foo: "bar" 
   });
   
-  var a = system.global.a;
+  var a = window.a;
   
-  system.global.b = SC.Object.create({ 
+  window.b = SC.Object.create({ 
     foo: "baz",
     fooBinding: "a.foo",
     
@@ -274,7 +273,7 @@ test("two bindings to the same value should sync in the order they are initializ
     
   });
   
-  var b = system.global.b;
+  var b = window.b;
 
   SC.LOG_BINDINGS = true;
     
@@ -284,7 +283,7 @@ test("two bindings to the same value should sync in the order they are initializ
   equals(b.get('foo'), "bar", 'a.foo should propogate up to b.foo');
   equals(b.c.get('foo'), "bar", 'a.foo should propogate up to b.c.foo');
   
-  system.global.a = system.global.b = null ;
+  window.a = window.b = null ;
   
 });
 
@@ -311,17 +310,17 @@ module("AND binding", {
 
 test("toObject.value should be YES if both sources are YES", function() {
   SC.RunLoop.begin();
-  SC.testControllerA.set('value', YES);
-  SC.testControllerB.set('value', YES);
+  SC.testControllerA.set('value', true);
+  SC.testControllerB.set('value', true);
   SC.RunLoop.end();
 
   SC.Binding.flushPendingChanges();
-  equals(toObject.get('value'), YES);
+  equals(toObject.get('value'), true);
 });
 
 test("toObject.value should be NO if either source is NO", function() {
   SC.RunLoop.begin();
-  SC.testControllerA.set('value', YES);
+  SC.testControllerA.set('value', true);
   SC.testControllerB.set('value', false);
   SC.RunLoop.end();
 
@@ -329,16 +328,16 @@ test("toObject.value should be NO if either source is NO", function() {
   equals(toObject.get('value'), false);
 
   SC.RunLoop.begin();
-  SC.testControllerA.set('value', YES);
-  SC.testControllerB.set('value', YES);
+  SC.testControllerA.set('value', true);
+  SC.testControllerB.set('value', true);
   SC.RunLoop.end();
 
   SC.Binding.flushPendingChanges();
-  equals(toObject.get('value'), YES);
+  equals(toObject.get('value'), true);
 
   SC.RunLoop.begin();
   SC.testControllerA.set('value', false);
-  SC.testControllerB.set('value', YES);
+  SC.testControllerB.set('value', true);
   SC.RunLoop.end();
 
   SC.Binding.flushPendingChanges();
@@ -402,4 +401,4 @@ test("Binding refreshes after a couple of items have been pushed in the array", 
   equals(toObject.get('value'), 'foo,bar');
 });
 
-plan.run();
+run();
